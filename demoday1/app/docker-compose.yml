@@ -36,5 +36,8 @@ services:
     restart: unless-stopped
     ports:
       - "80:80"
+    depends_on:
+      - db
     networks:
       - logmein-net
+

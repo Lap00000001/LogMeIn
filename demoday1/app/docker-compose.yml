@@ -1,19 +1,18 @@
 services:
+  # Base de données PostgreSQL
   db:
     image: postgres:15
     restart: unless-stopped
     environment:
+      POSTGRES_DB: logs_db
       POSTGRES_USER: logs_user
       POSTGRES_PASSWORD: logs_password
-      POSTGRES_DB: logs_db
-      # Volumes = important pour sauvegarder la DB même après l'arrêt du lab
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      #network = spécifie le réseau (ici il est commun)
     networks:
       - logmein-net
-
-  # Backend Flask
+    
+    # Backend Flask
   backend:
     build: ./backend
     restart: unless-stopped
@@ -36,8 +35,11 @@ services:
     restart: unless-stopped
     ports:
       - "80:80"
-    depends_on:
-      - db
     networks:
       - logmein-net
 
+volumes:
+  postgres_data:
+
+networks:
+  logmein-net:

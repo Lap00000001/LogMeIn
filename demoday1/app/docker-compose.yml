@@ -9,6 +9,11 @@ services:
       POSTGRES_PASSWORD: logs_password
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U logs_user -d logs_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     networks:
       - logmein-net
     
@@ -22,8 +27,8 @@ services:
       DB_USER: logs_user
       DB_PASSWORD: logs_password
       DB_PORT: 5432
-    ports:
-      - "5000:5000"  # optionnel : utile pour debug, mais pas nécessaire en prod
+#    ports:
+#      - "5000:5000"  # optionnel : utile pour debug, mais pas nécessaire en prod
     depends_on:
       - db
     networks:
@@ -43,3 +48,4 @@ volumes:
 
 networks:
   logmein-net:
+
